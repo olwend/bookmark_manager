@@ -7,6 +7,7 @@ gem "dm-postgres-adapter"
 gem 'sinatra'
 gem 'rake'
 gem 'rspec-sinatra'
+gem 'dm-transactions'
 
 group :test do
   gem "rspec"
@@ -15,4 +16,5 @@ group :test do
   gem 'coveralls', require: false
   gem 'capybara'
   gem 'byebug'
+  gem 'database_cleaner'
 end
