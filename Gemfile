@@ -4,6 +4,8 @@ ruby '2.3.3'
 
 gem "data_mapper"
 gem "dm-postgres-adapter"
+gem 'dm-migrations'
+gem 'dm-transactions'
 gem 'sinatra'
 gem 'rake'
 gem 'rspec-sinatra'
