@@ -12,7 +12,7 @@ feature 'creating links' do
     end
 
     scenario 'I want to add a link url and title' do
-      visit ('/')
+      visit ('/new')
       fill_in('title', with: 'BBC news')
       fill_in('url', with: 'http://www.bbc.co.uk/news')
       click_button('Submit')

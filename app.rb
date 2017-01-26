@@ -1,11 +1,7 @@
 ENV["RACK_ENV"] ||= "development"
 require 'rubygems'
 require 'sinatra/base'
-require 'data_mapper'
-require './models/link'
-require './models/tag'
-
-
+require './data_mapper_setup'
 
 class BMM < Sinatra::Base
 
@@ -23,9 +19,12 @@ class BMM < Sinatra::Base
   end
 
   post '/links' do
-    tag=Tag.new(name: params[:tag])
-    Link.create(url: params[:url], title: params[:title], tag: tag)
-    redirect '/links'
+    link = Link.new(url: params[:url],     # 1. Create a link
+                  title: params[:title])
+    tag  = Tag.first_or_create(name: params[:tags])  # 2. Create a tag for the link
+    link.tags << tag                       # 3. Adding the tag to the link's DataMapper collection.
+    link.save                              # 4. Saving the link.
+    redirect to('/links')
   end
 
   # start the server if ruby file executed directly
