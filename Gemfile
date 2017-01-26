@@ -8,6 +8,7 @@ gem 'sinatra'
 gem 'rake'
 gem 'rspec-sinatra'
 gem 'dm-transactions'
+gem 'rake'
 
 group :test do
   gem "rspec"
