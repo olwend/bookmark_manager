@@ -21,8 +21,10 @@ class BMM < Sinatra::Base
   post '/links' do
     link = Link.new(url: params[:url],     # 1. Create a link
                   title: params[:title])
-    tag  = Tag.first_or_create(name: params[:tags])  # 2. Create a tag for the link
-    link.tags << tag                       # 3. Adding the tag to the link's DataMapper collection.
+    array = params[:tags].split(" ")
+    array.each do |tag|
+    link.tags << Tag.first_or_create(name: tag)
+      end
     link.save                              # 4. Saving the link.
     redirect to('/links')
   end
