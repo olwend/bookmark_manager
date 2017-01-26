@@ -14,7 +14,7 @@ class BMM < Sinatra::Base
   end
 
   get '/links' do
-    p @link = Link.all
+    p @links = Link.all
     erb :'links/index'
   end
 
@@ -25,6 +25,14 @@ class BMM < Sinatra::Base
     link.tags << tag                       # 3. Adding the tag to the link's DataMapper collection.
     link.save                              # 4. Saving the link.
     redirect to('/links')
+  end
+
+  get '/tags/:name' do
+    tag = Tag.all(name: params[:name])
+    p tag
+    @links = tag ? tag.links : []
+    p tag.links
+    erb :'links/index'
   end
 
   # start the server if ruby file executed directly
