@@ -22,9 +22,11 @@ class BMM < Sinatra::Base
     link = Link.new(url: params[:url],     # 1. Create a link
                   title: params[:title])
     array = params[:tags].split(" ")
+    p array
     array.each do |tag|
     link.tags << Tag.first_or_create(name: tag)
       end
+    p link.tags
     link.save                              # 4. Saving the link.
     redirect to('/links')
   end
