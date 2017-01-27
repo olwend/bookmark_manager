@@ -22,6 +22,21 @@ class BMM < Sinatra::Base
     erb :'links/manage'
   end
 
+  get '/session/new' do
+    erb :'session/new'
+  end
+
+  post '/session' do
+    if user = User.authenticate(params[:email], params[:password])
+      session[:user_id] = user.id
+      flash[:messages] = "log in successfull, #{params[:email]}"
+      redirect '/links'
+    else
+      flash.now[:messages] = "username or password incorrect"
+      erb :'/sessions/new'
+    end
+  end
+
   get '/' do
     redirect '/users/new'
   end
@@ -35,12 +50,11 @@ class BMM < Sinatra::Base
     user = User.create(email: params[:email],
                        password: params[:password],
                        password_confirmation: params[:password_confirmation])
-    p user.email
     if user.valid?
       session[:user_id] = user.id
       redirect to('/links')
     else
-      flash.now[:messages] = "password does not match confirmation"
+      flash.now[:messages] = user.errors.full_messages
       erb :'users/new'
     end
   end
