@@ -20,21 +20,26 @@ class BMM < Sinatra::Base
   end
 
   get '/' do
-    redirect '/links'
+    redirect '/users/new'
   end
+
   get '/users/new' do
     erb :'users/new'
   end
 
   post '/users' do
     user = User.create(email: params[:email],
-                       password: params[:password])
+                       password: params[:password],
+                       password_confirmation: params[:password_confirmation])
+    p user.password_confirmation
+    p  user.valid?
+    user.password_digest
     session[:user_id] = user.id
     redirect to('/links')
   end
 
   get '/links' do
-    p @links = Link.all
+    @links = Link.all
     erb :'links/index'
   end
 
@@ -42,20 +47,17 @@ class BMM < Sinatra::Base
     link = Link.new(url: params[:url],     # 1. Create a link
                   title: params[:title])
     array = params[:tags].split(" ")
-    p array
     array.each do |tag|
     link.tags << Tag.first_or_create(name: tag)
     end
-    p link.tags
+    link.tags
     link.save                              # 4. Saving the link.
     redirect to('/links')
   end
 
   get '/tags/:name' do
     tag = Tag.all(name: params[:name])
-    p tag
     @links = tag ? tag.links : []
-    p tag.links
     erb :'links/index'
   end
 

@@ -11,7 +11,7 @@ feature 'creating tags' do
       fill_in('tags', with:'tomato')
       click_button('Submit')
       link = Link.first
-      p link.tags.map(&:name)
+      link.tags.map(&:name)
       expect(link.tags.map(&:name)).to include('tomato')
     end
 

@@ -7,7 +7,7 @@ require 'spec_helper'
 feature 'creating links' do
 
     scenario 'I want to enter add links page' do
-      visit ('/')
+      visit ('/links')
       expect(page).to have_content('Add new link')
     end
 

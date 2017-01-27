@@ -13,7 +13,7 @@ feature 'filtering tags' do
       tags: [Tag.first_or_create(name: 'bubbles')])
       Link.create(url: 'http://www.trouble.com', title: 'Trouble',
       tags: [Tag.first_or_create(name: 'trouble')])
-      p link = Link.all
+      link = Link.all
     end
 
   scenario 'test set up has created chosen tag links' do
@@ -21,7 +21,7 @@ feature 'filtering tags' do
   end
 
   scenario 'should take me to a page showing only chosen tag links' do
-    p Tag.all
+    Tag.all
     visit ('/tags/bubbles')
     expect(page.status_code).to eq(200)
     expect(page).to have_content('Frothy')
