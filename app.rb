@@ -2,6 +2,7 @@ ENV["RACK_ENV"] ||= "development"
 require 'rubygems'
 require 'sinatra/base'
 require './data_mapper_setup'
+require './models/user'
 
 
 class BMM < Sinatra::Base
@@ -26,10 +27,10 @@ class BMM < Sinatra::Base
   end
 
   post '/users' do
-  User.create(email: params[:email],
-              password: params[:password])
-              session[:user_id] = user.id
-  redirect to('/links')
+    user = User.create(email: params[:email],
+                       password: params[:password])
+    session[:user_id] = user.id
+    redirect to('/links')
   end
 
   get '/links' do
@@ -44,7 +45,7 @@ class BMM < Sinatra::Base
     p array
     array.each do |tag|
     link.tags << Tag.first_or_create(name: tag)
-      end
+    end
     p link.tags
     link.save                              # 4. Saving the link.
     redirect to('/links')

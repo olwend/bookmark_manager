@@ -1,5 +1,5 @@
-# bcrypt will generate the password hash
-require 'bcrypt' # make sure 'bcrypt' is in your Gemfile
+
+require 'bcrypt'
 
 class User
   include DataMapper::Resource
@@ -9,6 +9,6 @@ class User
   property :password_digest, Text
 
     def password=(password)
-      self.password_digest = BCrypt::Password.create(password)  
+      self.password_digest = BCrypt::Password.create(password)
     end
 end
