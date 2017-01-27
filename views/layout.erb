@@ -5,6 +5,10 @@
   </head>
 
   <body>
+    <% if flash[:messages] %>
+        <%= flash[:messages] %>
+    <% end %>
+
     <% if current_user %>
       Welcome, <%= current_user.email %>
     <% end %>

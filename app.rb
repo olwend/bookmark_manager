@@ -1,6 +1,7 @@
 ENV["RACK_ENV"] ||= "development"
 require 'rubygems'
 require 'sinatra/base'
+require 'sinatra/flash'
 require './data_mapper_setup'
 require './models/user'
 
@@ -8,6 +9,8 @@ require './models/user'
 class BMM < Sinatra::Base
   enable :sessions
   set :session_secret, 'super secret'
+
+  register Sinatra::Flash
 
   helpers do
     def current_user
@@ -31,11 +34,13 @@ class BMM < Sinatra::Base
     user = User.create(email: params[:email],
                        password: params[:password],
                        password_confirmation: params[:password_confirmation])
-    p user.password_confirmation
-    p  user.valid?
-    user.password_digest
-    session[:user_id] = user.id
-    redirect to('/links')
+    if user.valid?
+      session[:user_id] = user.id
+      redirect to('/links')
+    else
+      flash.now[:messages] = "password does not match confirmation"
+      erb :'users/new'
+    end
   end
 
   get '/links' do
@@ -46,7 +51,7 @@ class BMM < Sinatra::Base
   post '/links' do
     link = Link.new(url: params[:url],     # 1. Create a link
                   title: params[:title])
-    array = params[:tags].split(" ")
+    array = params[:tags].split(",")
     array.each do |tag|
     link.tags << Tag.first_or_create(name: tag)
     end
